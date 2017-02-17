@@ -25,6 +25,7 @@ public class Time extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width*0.8),(int) (height*0.6));
+        //this is visible in shithub
 
         radioGroup = (RadioGroup) findViewById(R.id.radG);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
