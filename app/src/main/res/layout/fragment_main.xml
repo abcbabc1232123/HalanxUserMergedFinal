@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content" />
 
                 <Spinner
-                    android:prompt="@string/prompt"
+                    android:prompt="Shopping"
                     android:entries="@array/Shopping"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <Spinner
-                    android:prompt="@string/prompt"
+                    android:prompt="For"
                     android:entries="@array/For"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
