@@ -28,9 +28,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MapsActivity extends AppCompatActivity implements
@@ -49,7 +54,13 @@ public class MapsActivity extends AppCompatActivity implements
 
     FirebaseAuth mauth;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference locref;
+    DatabaseReference locref, shopperAppRef;
+
+    FirebaseOptions options = new FirebaseOptions.Builder()
+            .setApiKey("AIzaSyDGpGmvzDetvS5IVrvceXvpgh83f6QSSis")
+            .setApplicationId("1:217617426078:android:7e523cbce003596e")
+            .setDatabaseUrl("https://halanxuser-dec25.firebaseio.com")
+            .build();
 
 
     @Override
@@ -60,6 +71,25 @@ public class MapsActivity extends AppCompatActivity implements
 
         mauth= FirebaseAuth.getInstance();
 
+        //Getting user location
+        FirebaseApp userApp = FirebaseApp.initializeApp(MapsActivity.this, options, "ShopperAppReference");
+        FirebaseDatabase userDatabase = FirebaseDatabase.getInstance(userApp);
+        shopperAppRef = userDatabase.getReference();
+        shopperAppRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userID = "ShopperID obt from backend";
+                LocationSend getLoc =  dataSnapshot.child("User Location").child(userID).getValue(LocationSend.class);
+                double latitude = getLoc.getLatitude();
+                double longitude = getLoc.getLongitude();
+                //Location further to be plotted on the map
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         final ProgressDialog pd1 = new ProgressDialog(this);
         bt1 = (Button)findViewById(R.id.on_off);
