@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MapsActivity extends AppCompatActivity implements
@@ -46,6 +48,8 @@ public class MapsActivity extends AppCompatActivity implements
     ProgressBar pb1;
 
     FirebaseAuth mauth;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference locref;
 
 
     @Override
@@ -55,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         mauth= FirebaseAuth.getInstance();
+
 
         final ProgressDialog pd1 = new ProgressDialog(this);
         bt1 = (Button)findViewById(R.id.on_off);
@@ -213,6 +218,10 @@ public class MapsActivity extends AppCompatActivity implements
     public void onLocationChanged(Location location) {
         //place marker at current position
         //mGoogleMap.clear();
+
+        //Function to send location to the database;
+        sendLocation(location.getLatitude(),location.getLongitude());
+
         if (currLocationMarker != null) {
             currLocationMarker.remove();
         }
@@ -235,6 +244,12 @@ public class MapsActivity extends AppCompatActivity implements
         //If you only need one location, unregister the listener
         //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
+    }
+
+    private void sendLocation(double latitude,double longitude) {
+        locref = firebaseDatabase.getReference();
+        LocationSend loc = new LocationSend(latitude,longitude);
+        locref.child("User Location").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(loc);
     }
 
     private void stopLocation() {

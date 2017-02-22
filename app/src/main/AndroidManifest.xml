@@ -29,6 +29,10 @@
 
         <activity android:name="com.halanx.tript.userapp.RegisterActivity"></activity>
         <activity android:name="com.halanx.tript.userapp.MapsActivity"></activity>
+        <activity android:name="com.halanx.tript.userapp.BecomeShopperActivity"/>
+        <activity android:name=".HelpActivity"/>
+        <activity android:name=".ReferEarnActivity"/>
+
     </application>
 
 </manifest>
