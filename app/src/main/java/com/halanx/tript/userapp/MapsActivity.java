@@ -1,4 +1,4 @@
-package com.samarthgupta.userapphalanx;
+package com.halanx.tript.userapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
