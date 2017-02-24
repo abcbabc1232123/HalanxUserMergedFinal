@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.alamkanak.weekview.WeekView;
+
 public class OrderActivity extends AppCompatActivity {
 
     Button checkout,delivery;
@@ -31,7 +33,7 @@ public class OrderActivity extends AppCompatActivity {
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, PaymentActivity.class));
+                startActivity(new Intent(OrderActivity.this, WeekView.class));
                 delivery.setVisibility(View.GONE);
                 charges.setVisibility(View.VISIBLE);
             }
