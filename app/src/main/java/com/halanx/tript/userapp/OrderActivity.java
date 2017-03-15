@@ -25,6 +25,7 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(OrderActivity.this, PaymentActivity.class));
+                finish();
             }
         });
 
@@ -33,7 +34,7 @@ public class OrderActivity extends AppCompatActivity {
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, WeekView.class));
+                startActivity(new Intent(OrderActivity.this, WeekViewActivity.class));
                 delivery.setVisibility(View.GONE);
                 charges.setVisibility(View.VISIBLE);
             }

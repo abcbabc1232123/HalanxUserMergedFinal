@@ -41,7 +41,7 @@ public class SigninActivity extends AppCompatActivity{
       if (auth.getCurrentUser() != null) {
             // TO USE
             //auth.signOut();
-           startActivity(new Intent(SigninActivity.this, MapsActivity.class));
+           startActivity(new Intent(SigninActivity.this, Home.class));
            finish();
       }
 
@@ -96,7 +96,7 @@ public class SigninActivity extends AppCompatActivity{
                                     }
                                 } else {
                                     //TO USE - LOGIN COMPLETE
-                                    Intent intent = new Intent(SigninActivity.this, MapsActivity.class);
+                                    Intent intent = new Intent(SigninActivity.this, Home.class);
                                     startActivity(intent);
                                     finish();
                                 }

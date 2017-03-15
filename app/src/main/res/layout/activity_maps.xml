@@ -4,7 +4,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/content_map"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.halanx.tript.userapp.MapsActivity"
+tools:context="com.halanx.tript.userapp.Home"
 >
 
 
