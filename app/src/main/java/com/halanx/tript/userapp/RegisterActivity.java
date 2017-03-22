@@ -1,11 +1,13 @@
 package com.halanx.tript.userapp;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by samarthgupta on 13/02/17.
@@ -123,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         UserInfo userInfo = new UserInfo(email,password,fname,lname,mno,city,icode);
                                         ref.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userInfo);
                                         startActivity(new Intent(RegisterActivity.this, SigninActivity.class));
+                                        SendData();
                                         finish();
                                     }
                                 }
@@ -138,5 +154,97 @@ public class RegisterActivity extends AppCompatActivity {
         //progressBar.setVisibility(View.GONE);
     }
 
+    public class SendDataToServer extends AsyncTask<String,String,String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+            String JsonDATA = params[0];
+            String JsonResponse;
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL("ec2-52-38-36-228.us-west-2.compute.amazonaws.com:8000/users");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                // is output buffer writter
+                urlConnection.setRequestMethod("POST");
+              //  urlConnection.setRequestProperty("Content-Type", "application/json");
+              //  urlConnection.setRequestProperty("Accept", "application/json");
+
+//set headers and method
+                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+                writer.write(JsonDATA);
+// json data
+                writer.close();
+                InputStream inputStream = urlConnection.getInputStream();
+//input stream
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null)
+                    buffer.append(inputLine + "\n");
+                if (buffer.length() == 0) {
+                    // Stream was empty. No point in parsing.
+                    return null;
+                }
+                JsonResponse = buffer.toString();
+//response data
+                Log.i("Response",JsonResponse);
+                //send to post execute
+                return JsonResponse;
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("Error", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+        }
+
+    }
+
+    public void SendData() {
+        //function in the activity that corresponds to the layout button
+
+        JSONObject post_dict = new JSONObject();
+        try {
+
+            post_dict.put("FirstName","a");
+            post_dict.put("LastName","b");
+            post_dict.put("Address","D2 hbk");
+            post_dict.put("PhoneNo","9898989898");
+            post_dict.put("EmailId","abc@gmail.com");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (post_dict.length() > 0) {
+            new SendDataToServer().execute(String.valueOf(post_dict));
+        }
+    }
 }
+
+

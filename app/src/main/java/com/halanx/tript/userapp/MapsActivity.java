@@ -37,6 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -249,8 +251,8 @@ public class MapsActivity extends AppCompatActivity implements
         //place marker at current position
         //mGoogleMap.clear();
 
-        //Function to send location to the database;
-        sendLocation(location.getLatitude(),location.getLongitude());
+        //Function to send location to the database - COMMENT TO BE REMOVED
+       // sendLocation(location.getLatitude(),location.getLongitude());
 
         if (currLocationMarker != null) {
             currLocationMarker.remove();
@@ -276,11 +278,15 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
 
+
+    //SENDING LOCATION - COMMENT TO BE REMOVED
+    /*
     private void sendLocation(double latitude,double longitude) {
         locref = firebaseDatabase.getReference();
         LocationSend loc = new LocationSend(latitude,longitude);
         locref.child("User Location").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(loc);
-    }
+    } */
+
 
     private void stopLocation() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -289,6 +295,8 @@ public class MapsActivity extends AppCompatActivity implements
         startActivity(new Intent(MapsActivity.this,MapsActivity.class));
         finish();
     }
+
+
 
 
 
