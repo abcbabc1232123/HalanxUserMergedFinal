@@ -16,11 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SigninActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -31,7 +27,13 @@
         <activity android:name=".MapsActivity" />
         <activity android:name=".BecomeShopperActivity" />
         <activity android:name=".HelpActivity" />
-        <activity android:name=".ReferEarnActivity" />
+        <activity android:name=".ReferEarnActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".Home" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".Item" />
