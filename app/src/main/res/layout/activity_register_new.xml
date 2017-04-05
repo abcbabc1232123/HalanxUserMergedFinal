@@ -22,7 +22,7 @@
             android:ems="8"
             android:hint="First Name"
             android:layout_marginEnd="20dp"
-            android:id="@+id/editText1" />
+            android:id="@+id/tv_firstName" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -35,8 +35,7 @@
             android:inputType="textPersonName"
             android:ems="20"
             android:hint="Last Name"
-            android:id="@+id/editText2"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/tv_lastName"
             android:layout_marginEnd="105dp" />
     </android.support.design.widget.TextInputLayout>
     </LinearLayout>
@@ -57,9 +56,7 @@
                 android:inputType="textEmailAddress"
                 android:hint="Email"
                 android:ems="10"
-                android:layout_below="@+id/editText1"
-                android:layout_alignParentStart="true"
-                android:id="@+id/editText3" />
+                android:id="@+id/tv_email" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -72,10 +69,7 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:hint="Password"
-                android:layout_below="@+id/tvpassword"
-                android:layout_alignParentStart="true"
-                android:id="@+id/editText5"
-                android:layout_alignEnd="@+id/editText4" />
+                android:id="@+id/tv_password" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -87,8 +81,7 @@
                 android:inputType="number"
                 android:ems="10"
                 android:hint="Mobile Number"
-                android:layout_below="@+id/tvmobile"
-                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_mobile"
                 android:id="@+id/editText7" />
         </android.support.design.widget.TextInputLayout>
 
@@ -101,11 +94,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:hint="City"
-                android:layout_below="@+id/tvcity"
-                android:layout_alignParentStart="true"
-                android:id="@+id/editText8"
-                android:layout_alignEnd="@+id/editText7" />
+                android:hint="Address"
+                android:id="@+id/tv_address" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -119,10 +109,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:hint="Invite Code"
-                android:layout_below="@+id/tvinvite"
-                android:layout_alignParentStart="true"
-                android:id="@+id/editText9"
-                android:layout_alignEnd="@+id/tvinvite" />
+                android:id="@+id/tv_inviteCode" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>

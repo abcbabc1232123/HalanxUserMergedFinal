@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.halanx.tript.userapp.Interfaces.DataInterface;
+import com.halanx.tript.userapp.POJO.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,13 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by samarthgupta on 13/02/17.
@@ -41,7 +49,7 @@ import java.net.URL;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputfname, inputlname, inputmno , inputcity,inputicode;
+    private EditText inputEmail, inputPassword, inputFname, inputLname, inputMobile , inputAddress,inputIcode;
     private Button btnRegister;
    // private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -61,14 +69,14 @@ public class RegisterActivity extends AppCompatActivity {
             user=auth.getCurrentUser();
 
             btnRegister = (Button)findViewById(R.id.btn1);
-            inputEmail = (EditText) findViewById(R.id.editText3);
-            inputPassword = (EditText) findViewById(R.id.editText5);
+            inputEmail = (EditText) findViewById(R.id.tv_email);
+            inputPassword = (EditText) findViewById(R.id.tv_password);
           //  progressBar = (ProgressBar) findViewById(R.id.progressBar);
-            inputcity = (EditText)findViewById(R.id.editText8);
-            inputfname=(EditText)findViewById(R.id.editText1);
-            inputlname= (EditText)findViewById(R.id.editText2);
-            inputmno = (EditText)findViewById(R.id.editText7);
-            inputicode = (EditText)findViewById(R.id.editText9);
+            inputAddress = (EditText)findViewById(R.id.tv_address);
+            inputFname=(EditText)findViewById(R.id.tv_firstName);
+            inputLname= (EditText)findViewById(R.id.tv_lastName);
+            inputMobile = (EditText)findViewById(R.id.tv_mobile);
+            inputIcode = (EditText)findViewById(R.id.tv_inviteCode);
 
 
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -77,11 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                     final String email = inputEmail.getText().toString().trim();
                     final String password = inputPassword.getText().toString().trim();
-                    final String fname = inputfname.getText().toString().trim();
-                    final String lname = inputlname.getText().toString().trim();
-                    final String mno = inputmno.getText().toString().trim();
-                    final String city = inputcity.getText().toString().trim();
-                    final String icode = inputicode.getText().toString().trim();
+                    final String firstName = inputFname.getText().toString().trim();
+                    final String lastName = inputLname.getText().toString().trim();
+                    final String mobileNumber = inputMobile.getText().toString().trim();
+                    final String address = inputAddress.getText().toString().trim();
+                    final String icode = inputIcode.getText().toString().trim();
 
 
 
@@ -101,22 +109,22 @@ public class RegisterActivity extends AppCompatActivity {
                         return;
                     }
 
-                   else if (TextUtils.isEmpty(fname)||TextUtils.isEmpty(lname)) {
+                   else if (TextUtils.isEmpty(firstName)||TextUtils.isEmpty(lastName)) {
                         Toast.makeText(getApplicationContext(), "Enter First and Last name", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                   else if (TextUtils.isEmpty(mno)) {
+                   else if (TextUtils.isEmpty(mobileNumber)) {
                         Toast.makeText(getApplicationContext(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                   else if (mno.length()!=10) {
+                   else if (mobileNumber.length()!=10) {
                         Toast.makeText(getApplicationContext(), "Please enter a valid mobile number", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    else if (TextUtils.isEmpty(city)) {
+                    else if (TextUtils.isEmpty(address)) {
                         Toast.makeText(getApplicationContext(), "Enter your city", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -135,10 +143,11 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),Toast.LENGTH_SHORT).show();
                                     } else {
 
-                                        UserInfo userInfo = new UserInfo(email,password,fname,lname,mno,city,icode);
+                                        UserInfo userInfo = new UserInfo(firstName,lastName,address,mobileNumber,email);
+                                        //SET VALUES TO THE OBJECT
                                         ref.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userInfo);
+                                        sendRegistrationDataToServer(userInfo);
                                         startActivity(new Intent(RegisterActivity.this, SigninActivity.class));
-                                        SendData();
                                         finish();
                                     }
                                 }
@@ -154,96 +163,28 @@ public class RegisterActivity extends AppCompatActivity {
         //progressBar.setVisibility(View.GONE);
     }
 
-    public class SendDataToServer extends AsyncTask<String,String,String> {
+    void sendRegistrationDataToServer(UserInfo info) {
 
-        @Override
-        protected String doInBackground(String... params) {
-            String JsonDATA = params[0];
-            String JsonResponse;
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-            try {
-                URL url = new URL("ec2-52-38-36-228.us-west-2.compute.amazonaws.com:8000/users");
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
-                // is output buffer writter
-                urlConnection.setRequestMethod("POST");
-              //  urlConnection.setRequestProperty("Content-Type", "application/json");
-              //  urlConnection.setRequestProperty("Accept", "application/json");
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://ec2-34-208-181-152.us-west-2.compute.amazonaws.com/").
+                addConverterFactory(GsonConverterFactory.create());
 
-//set headers and method
-                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-                writer.write(JsonDATA);
-// json data
-                writer.close();
-                InputStream inputStream = urlConnection.getInputStream();
-//input stream
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
+        Retrofit retrofit = builder.build();
+        DataInterface client = retrofit.create(DataInterface.class);
 
-                String inputLine;
-                while ((inputLine = reader.readLine()) != null)
-                    buffer.append(inputLine + "\n");
-                if (buffer.length() == 0) {
-                    // Stream was empty. No point in parsing.
-                    return null;
-                }
-                JsonResponse = buffer.toString();
-//response data
-                Log.i("Response",JsonResponse);
-                //send to post execute
-                return JsonResponse;
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
+        Call<UserInfo> call = client.putDataOnServer(info);
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                // String s = response.body().getEmailId();
+                Log.i("TAG1","DONE PUT");
             }
-            finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e("Error", "Error closing stream", e);
-                    }
-                }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.i("TAG1","FAIL");
             }
-            return null;
+        });
 
-        }
-
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
-
-    public void SendData() {
-        //function in the activity that corresponds to the layout button
-
-        JSONObject post_dict = new JSONObject();
-        try {
-
-            post_dict.put("FirstName","a");
-            post_dict.put("LastName","b");
-            post_dict.put("Address","D2 hbk");
-            post_dict.put("PhoneNo","9898989898");
-            post_dict.put("EmailId","abc@gmail.com");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (post_dict.length() > 0) {
-            new SendDataToServer().execute(String.valueOf(post_dict));
-        }
     }
 }
 
