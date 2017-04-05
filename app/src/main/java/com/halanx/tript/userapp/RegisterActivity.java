@@ -49,10 +49,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputFname, inputLname, inputMobile , inputAddress,inputIcode;
-    private Button btnRegister;
+    EditText inputEmail, inputPassword, inputFname, inputLname, inputMobile , inputAddress,inputIcode;
+    Button btnRegister;
    // private ProgressBar progressBar;
-    private FirebaseAuth auth;
+    FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     DatabaseReference ref ;
@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
             ref = firebaseDatabase.getReference();
             user=auth.getCurrentUser();
 
-            btnRegister = (Button)findViewById(R.id.btn1);
+            btnRegister = (Button)findViewById(R.id.btn_register);
             inputEmail = (EditText) findViewById(R.id.tv_email);
             inputPassword = (EditText) findViewById(R.id.tv_password);
           //  progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -85,10 +85,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                     final String email = inputEmail.getText().toString().trim();
                     final String password = inputPassword.getText().toString().trim();
+                    final String address = inputAddress.getText().toString().trim();
                     final String firstName = inputFname.getText().toString().trim();
                     final String lastName = inputLname.getText().toString().trim();
                     final String mobileNumber = inputMobile.getText().toString().trim();
-                    final String address = inputAddress.getText().toString().trim();
                     final String icode = inputIcode.getText().toString().trim();
 
 
