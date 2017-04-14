@@ -1,13 +1,15 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class BecomeShopperActivity extends AppCompatActivity {
+import com.halanx.tript.userapp.R;
+
+public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_become_shopper);
+        setContentView(R.layout.activity_help);
     }
 }

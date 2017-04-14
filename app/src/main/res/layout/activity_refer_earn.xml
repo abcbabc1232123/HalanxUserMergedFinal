@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.halanx.tript.userapp.ReferEarnActivity">
+    tools:context="com.halanx.tript.userapp.Activities.ReferEarnActivity">
 
     <TextView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.halanx.tript.userapp.Home;
+import com.halanx.tript.userapp.R;
 
 /**
  * Created by samarthgupta on 12/02/17.

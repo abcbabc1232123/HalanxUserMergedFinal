@@ -1,4 +1,4 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.POJO;
 
 /**
  * Created by samarthgupta on 23/02/17.

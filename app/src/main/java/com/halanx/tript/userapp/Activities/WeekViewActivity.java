@@ -1,4 +1,4 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -11,6 +11,7 @@ import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
+import com.halanx.tript.userapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

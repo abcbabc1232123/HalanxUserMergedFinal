@@ -1,7 +1,6 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,20 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.halanx.tript.userapp.Interfaces.DataInterface;
 import com.halanx.tript.userapp.POJO.UserInfo;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
+import com.halanx.tript.userapp.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -175,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                // String s = response.body().getEmailId();
                 Log.i("TAG1","DONE PUT");
             }
 

@@ -1,10 +1,13 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.halanx.tript.userapp.NotificationClass;
+import com.halanx.tript.userapp.R;
 
 public class ReferEarnActivity extends AppCompatActivity {
 
@@ -21,9 +24,6 @@ public class ReferEarnActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 shareIt();
-                NotificationClass notif = new NotificationClass();
-                notif.sendNotif(getApplicationContext(),"New offers!","Get 50% Off. Order Now!","Ticker");
-
             }
         });
     }

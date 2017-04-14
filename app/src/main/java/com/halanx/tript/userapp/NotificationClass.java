@@ -24,7 +24,7 @@ public class NotificationClass {
         NotificationManager notificationManager;
         Context c;
 
-        void sendNotif(Context context,String title, String text, String ticker){
+        public void sendNotif(Context context,String title, String text, String ticker){
             c=context;
             notif = new NotificationCompat.Builder(context);
             notif.setAutoCancel(true);

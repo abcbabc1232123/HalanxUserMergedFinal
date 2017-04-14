@@ -20,7 +20,7 @@ public interface DataInterface {
     Call<UserInfo> putDataOnServer(@Body UserInfo userData);
 
     @GET("/users/")
-    Call<List<UserInfo>> getDataOnServer();
+    Call<List<UserInfo>> getDataFromServer();
 
 
 }

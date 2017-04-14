@@ -1,11 +1,8 @@
 package com.halanx.tript.userapp;
 
-import android.app.DownloadManager;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,34 +10,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ui.email.SignInActivity;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Downloader;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import okhttp3.Response;
+import com.halanx.tript.userapp.Activities.BecomeShopperActivity;
+import com.halanx.tript.userapp.Activities.HelpActivity;
+import com.halanx.tript.userapp.Activities.OrderActivity;
+import com.halanx.tript.userapp.Activities.PaymentActivity;
+import com.halanx.tript.userapp.Activities.ReferEarnActivity;
+import com.halanx.tript.userapp.Activities.SigninActivity;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -127,9 +107,9 @@ public class Home extends AppCompatActivity
             fragmentTransaction.replace(R.id.frag_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_order) {
-
+            startActivity(new Intent(Home.this,OrderActivity.class));
         } else if (id == R.id.nav_payment) {
-
+            startActivity(new Intent(Home.this,PaymentActivity.class));
         } else if (id == R.id.nav_favourites) {
 
         } else if (id == R.id.nav_list) {
@@ -139,19 +119,15 @@ public class Home extends AppCompatActivity
         }// more buttons to be initialised i.e those below points
         else if (id == R.id.nav_ref) {
             startActivity(new Intent(Home.this,ReferEarnActivity.class));
-
         }
         else if (id == R.id.nav_shopper) {
             startActivity(new Intent(Home.this,BecomeShopperActivity.class));
-
         }
         else if (id == R.id.nav_help) {
             startActivity(new Intent(Home.this,HelpActivity.class));
-
         }
 
         else if (id == R.id.nav_sign_out) {
-
             mAuth.signOut();
             mAuth.addAuthStateListener(mAuthStateListener);
         }
