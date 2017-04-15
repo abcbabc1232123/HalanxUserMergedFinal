@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HalanxTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/red</item>
+            <item name="colorPrimaryDark">@color/red</item>
+            <item name="colorAccent">@color/red</item>
+    </style>
+</resources>

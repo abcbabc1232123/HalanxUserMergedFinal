@@ -67,7 +67,4 @@
         android:id="@+id/btn_download"
 
         />
-
-
-
 </LinearLayout>
