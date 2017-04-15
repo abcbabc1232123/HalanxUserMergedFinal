@@ -1,4 +1,4 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.halanx.tript.userapp.Interfaces.DataInterface;
+import com.halanx.tript.userapp.POJO.UserInfo;
+import com.halanx.tript.userapp.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by samarthgupta on 13/02/17.
@@ -26,10 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputfname, inputlname, inputmno , inputcity,inputicode;
-    private Button btnRegister;
+    EditText inputEmail, inputPassword, inputFname, inputLname, inputMobile , inputAddress,inputIcode;
+    Button btnRegister;
    // private ProgressBar progressBar;
-    private FirebaseAuth auth;
+    FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     DatabaseReference ref ;
@@ -45,15 +54,15 @@ public class RegisterActivity extends AppCompatActivity {
             ref = firebaseDatabase.getReference();
             user=auth.getCurrentUser();
 
-            btnRegister = (Button)findViewById(R.id.btn1);
-            inputEmail = (EditText) findViewById(R.id.editText3);
-            inputPassword = (EditText) findViewById(R.id.editText5);
+            btnRegister = (Button)findViewById(R.id.btn_register);
+            inputEmail = (EditText) findViewById(R.id.tv_email);
+            inputPassword = (EditText) findViewById(R.id.tv_password);
           //  progressBar = (ProgressBar) findViewById(R.id.progressBar);
-            inputcity = (EditText)findViewById(R.id.editText8);
-            inputfname=(EditText)findViewById(R.id.editText1);
-            inputlname= (EditText)findViewById(R.id.editText2);
-            inputmno = (EditText)findViewById(R.id.editText7);
-            inputicode = (EditText)findViewById(R.id.editText9);
+            inputAddress = (EditText)findViewById(R.id.tv_address);
+            inputFname=(EditText)findViewById(R.id.tv_firstName);
+            inputLname= (EditText)findViewById(R.id.tv_lastName);
+            inputMobile = (EditText)findViewById(R.id.tv_mobile);
+            inputIcode = (EditText)findViewById(R.id.tv_inviteCode);
 
 
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +71,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                     final String email = inputEmail.getText().toString().trim();
                     final String password = inputPassword.getText().toString().trim();
-                    final String fname = inputfname.getText().toString().trim();
-                    final String lname = inputlname.getText().toString().trim();
-                    final String mno = inputmno.getText().toString().trim();
-                    final String city = inputcity.getText().toString().trim();
-                    final String icode = inputicode.getText().toString().trim();
+                    final String address = inputAddress.getText().toString().trim();
+                    final String firstName = inputFname.getText().toString().trim();
+                    final String lastName = inputLname.getText().toString().trim();
+                    final String mobileNumber = inputMobile.getText().toString().trim();
+                    final String icode = inputIcode.getText().toString().trim();
 
 
 
@@ -86,22 +95,22 @@ public class RegisterActivity extends AppCompatActivity {
                         return;
                     }
 
-                   else if (TextUtils.isEmpty(fname)||TextUtils.isEmpty(lname)) {
+                   else if (TextUtils.isEmpty(firstName)||TextUtils.isEmpty(lastName)) {
                         Toast.makeText(getApplicationContext(), "Enter First and Last name", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                   else if (TextUtils.isEmpty(mno)) {
+                   else if (TextUtils.isEmpty(mobileNumber)) {
                         Toast.makeText(getApplicationContext(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                   else if (mno.length()!=10) {
+                   else if (mobileNumber.length()!=10) {
                         Toast.makeText(getApplicationContext(), "Please enter a valid mobile number", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    else if (TextUtils.isEmpty(city)) {
+                    else if (TextUtils.isEmpty(address)) {
                         Toast.makeText(getApplicationContext(), "Enter your city", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -120,8 +129,10 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),Toast.LENGTH_SHORT).show();
                                     } else {
 
-                                        UserInfo userInfo = new UserInfo(email,password,fname,lname,mno,city,icode);
+                                        UserInfo userInfo = new UserInfo(firstName,lastName,address,mobileNumber,email);
+                                        //SET VALUES TO THE OBJECT
                                         ref.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userInfo);
+                                        sendRegistrationDataToServer(userInfo);
                                         startActivity(new Intent(RegisterActivity.this, SigninActivity.class));
                                         finish();
                                     }
@@ -138,5 +149,28 @@ public class RegisterActivity extends AppCompatActivity {
         //progressBar.setVisibility(View.GONE);
     }
 
+    void sendRegistrationDataToServer(UserInfo info) {
 
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://ec2-34-208-181-152.us-west-2.compute.amazonaws.com/").
+                addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+        DataInterface client = retrofit.create(DataInterface.class);
+
+        Call<UserInfo> call = client.putDataOnServer(info);
+        call.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                Log.i("TAG1","DONE PUT");
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Log.i("TAG1","FAIL");
+            }
+        });
+
+    }
 }
+
+

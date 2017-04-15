@@ -2,6 +2,7 @@ package com.halanx.tript.userapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,13 +10,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.halanx.tript.userapp.Activities.BecomeShopperActivity;
+import com.halanx.tript.userapp.Activities.HelpActivity;
+import com.halanx.tript.userapp.Activities.OrderActivity;
+import com.halanx.tript.userapp.Activities.PaymentActivity;
+import com.halanx.tript.userapp.Activities.ReferEarnActivity;
+import com.halanx.tript.userapp.Activities.SigninActivity;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,7 +64,21 @@ public class Home extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mAuthStateListener= new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(Home.this, SigninActivity.class));
+                    finish();
+                }
+            }
+        };
     }
+
 
     @Override
     public void onBackPressed() {
@@ -88,9 +107,9 @@ public class Home extends AppCompatActivity
             fragmentTransaction.replace(R.id.frag_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_order) {
-
+            startActivity(new Intent(Home.this,OrderActivity.class));
         } else if (id == R.id.nav_payment) {
-
+            startActivity(new Intent(Home.this,PaymentActivity.class));
         } else if (id == R.id.nav_favourites) {
 
         } else if (id == R.id.nav_list) {
@@ -98,9 +117,27 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_pts) {
 
         }// more buttons to be initialised i.e those below points
+        else if (id == R.id.nav_ref) {
+            startActivity(new Intent(Home.this,ReferEarnActivity.class));
+        }
+        else if (id == R.id.nav_shopper) {
+            startActivity(new Intent(Home.this,BecomeShopperActivity.class));
+        }
+        else if (id == R.id.nav_help) {
+            startActivity(new Intent(Home.this,HelpActivity.class));
+        }
+
+        else if (id == R.id.nav_sign_out) {
+            mAuth.signOut();
+            mAuth.addAuthStateListener(mAuthStateListener);
+        }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

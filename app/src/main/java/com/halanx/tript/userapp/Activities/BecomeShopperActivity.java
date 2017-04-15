@@ -1,7 +1,9 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.halanx.tript.userapp.R;
 
 public class BecomeShopperActivity extends AppCompatActivity {
 

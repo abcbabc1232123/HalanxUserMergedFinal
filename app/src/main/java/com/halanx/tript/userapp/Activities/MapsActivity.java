@@ -1,4 +1,4 @@
-package com.halanx.tript.userapp;
+package com.halanx.tript.userapp.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -36,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.halanx.tript.userapp.POJO.LocationSend;
+import com.halanx.tript.userapp.R;
 
 
 public class MapsActivity extends AppCompatActivity implements
@@ -75,21 +76,23 @@ public class MapsActivity extends AppCompatActivity implements
         FirebaseApp userApp = FirebaseApp.initializeApp(MapsActivity.this, options, "ShopperAppReference");
         FirebaseDatabase userDatabase = FirebaseDatabase.getInstance(userApp);
         shopperAppRef = userDatabase.getReference();
-        shopperAppRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String userID = "ShopperID obt from backend";
-                LocationSend getLoc =  dataSnapshot.child("User Location").child(userID).getValue(LocationSend.class);
-                double latitude = getLoc.getLatitude();
-                double longitude = getLoc.getLongitude();
-                //Location further to be plotted on the map
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        //////// TO BE USED WHEN ORDER IS ACCEPTED.
+//        shopperAppRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String userID = "ShopperID obt from backend";
+//                LocationSend getLoc =  dataSnapshot.child("User Location").child(userID).getValue(LocationSend.class);
+//                double latitude = getLoc.getLatitude();
+//                double longitude = getLoc.getLongitude();
+//                //Location further to be plotted on the map
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         final ProgressDialog pd1 = new ProgressDialog(this);
         bt1 = (Button)findViewById(R.id.on_off);
@@ -249,8 +252,8 @@ public class MapsActivity extends AppCompatActivity implements
         //place marker at current position
         //mGoogleMap.clear();
 
-        //Function to send location to the database;
-        sendLocation(location.getLatitude(),location.getLongitude());
+        //Function to send location to the database - COMMENT TO BE REMOVED
+       // sendLocation(location.getLatitude(),location.getLongitude());
 
         if (currLocationMarker != null) {
             currLocationMarker.remove();
@@ -276,11 +279,15 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
 
+
+    //SENDING LOCATION - COMMENT TO BE REMOVED
+    /*
     private void sendLocation(double latitude,double longitude) {
         locref = firebaseDatabase.getReference();
         LocationSend loc = new LocationSend(latitude,longitude);
         locref.child("User Location").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(loc);
-    }
+    } */
+
 
     private void stopLocation() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -289,6 +296,8 @@ public class MapsActivity extends AppCompatActivity implements
         startActivity(new Intent(MapsActivity.this,MapsActivity.class));
         finish();
     }
+
+
 
 
 

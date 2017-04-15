@@ -14,30 +14,35 @@
         android:icon="@drawable/halanx_launcher"
         android:label="Halanx"
         android:supportsRtl="true"
+
         android:theme="@style/HalanxTheme">
-        <activity android:name=".SigninActivity">
+        <activity android:name=".Activities.SigninActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIFiPq2L6TZ4wHvA3UrsKKRfEFRXS8W98" />
 
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MapsActivity" />
-        <activity android:name=".BecomeShopperActivity" />
-        <activity android:name=".HelpActivity" />
-        <activity android:name=".ReferEarnActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.MapsActivity" />
+        <activity android:name=".Activities.BecomeShopperActivity" />
+        <activity android:name=".Activities.HelpActivity" />
+        <activity android:name=".Activities.ReferEarnActivity">
+
+        </activity>
         <activity android:name=".Home" />
-        <activity android:name=".OrderActivity" />
+        <activity android:name=".Activities.OrderActivity" />
         <activity android:name=".Item" />
-        <activity android:name=".PaymentActivity" />
-        <activity android:name=".WeekViewActivity" />
-        <activity android:name=".RatingActivity"></activity>
+        <activity android:name=".Activities.PaymentActivity" />
+        <activity android:name=".Activities.WeekViewActivity" />
+        <activity android:name=".Activities.RatingActivity"></activity>
     </application>
 
 </manifest>
